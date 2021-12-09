@@ -9,7 +9,8 @@
 #include <string>
 #include <tuple>
 #include <vector>
-struct Position {
+struct Position
+{
     int horizontal = 0;
     int depth = 0;
     int aim = 0;
@@ -17,22 +18,23 @@ struct Position {
 int main()
 {
     std::ifstream input{
-        "/home/onur/cpp_projects/cpp_experiments/adventofcode/2021/day2/day2.txt"};
+        "/home/onur/cpp_projects/cpp_experiments/adventofcode/2021/day2/day2.txt"
+    };
     auto values =
-        ranges::istream_view<std::string>(input) |ranges::to<std::vector>;
+      ranges::istream_view<std::string>(input) | ranges::to<std::vector>;
     auto pairs = values | ranges::view::chunk(2);
 
     auto position = Position{};
-    ranges::for_each(pairs, [&position](auto p){
-        if (p[0] == "forward"){
+    ranges::for_each(pairs, [&position](auto p) {
+        if (p[0] == "forward") {
             auto forward = stoi(p[1]);
             position.horizontal += forward;
-            position.depth += position.aim*forward;
-        } else if (p[0] == "down"){
+            position.depth += position.aim * forward;
+        } else if (p[0] == "down") {
             position.aim += stoi(p[1]);
-        } else if (p[0] == "up"){
+        } else if (p[0] == "up") {
             position.aim -= stoi(p[1]);
         }
     });
-    fmt::print("The answer is {}\n", position.horizontal*position.depth);
+    fmt::print("The answer is {}\n", position.horizontal * position.depth);
 }

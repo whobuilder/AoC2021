@@ -17,8 +17,7 @@ include(${ONKI_CMAKE_FILES_PATH}/Sanitizers.cmake)
 enable_sanitizers(project_options)
 target_compile_features(project_options INTERFACE cxx_std_17)
 
-
 find_package(range-v3 REQUIRED)
 find_package(fmt REQUIRED)
 add_subdirectory(day1)
-
+add_subdirectory(day2)
