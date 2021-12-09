@@ -17,10 +17,11 @@ int main()
 
     auto values = values_as_string | ranges::view::transform([](auto value) { return std::stoi(value, nullptr, 2); }) | ranges::to<std::vector>;
     auto size = std::size(values);
+    auto get_ith_bit = [](auto value, unsigned i) { return ((0b1 << i) & value) >> i; };
 
     std::vector<bool> gamma_rate_bits;
     for (unsigned i = 0; i < number_of_bits; ++i) {
-        auto ones_no = ranges::count_if(values, [i](auto value) { return ((0b1 << i) & value) >> i; });
+        auto ones_no = ranges::count_if(values, [get_ith_bit, i](auto value) { return get_ith_bit(value, i); });
         gamma_rate_bits.push_back(static_cast<unsigned>(ones_no) > size / 2);
     }
 
