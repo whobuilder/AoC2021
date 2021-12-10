@@ -2,7 +2,9 @@
 #include <fstream>
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/istream_range.hpp>
+#include <range/v3/numeric/accumulate.hpp>
 #include <range/v3/to_container.hpp>
+#include <range/v3/view/reverse.hpp>
 #include <range/v3/view/transform.hpp>
 #include <string>
 #include <vector>
@@ -25,20 +27,8 @@ int main()
         gamma_rate_bits.push_back(static_cast<unsigned>(ones_no) > size / 2);
     }
 
+    auto gamma_rate = ranges::accumulate(gamma_rate_bits | ranges::view::reverse, 0, [](auto acc, auto v) { return (acc << 1) | v; });
 
-    auto bits_to_decimal = [](auto bits, bool reverse) {
-        auto as_decimal = 0;
-        for (unsigned i = 0; i < std::size(bits); ++i) {
-            bool is_one_bit = bits[i];
-            if (reverse) is_one_bit = !is_one_bit;
-            if (is_one_bit) {
-                as_decimal |= (0b1 << i);
-            }
-        }
-        return as_decimal;
-    };
-
-    auto gamma_rate = bits_to_decimal(gamma_rate_bits, false);
-    auto epsilon_rate = bits_to_decimal(gamma_rate_bits, true);
+    auto epsilon_rate = ranges::accumulate(gamma_rate_bits | ranges::view::reverse, 0, [](auto acc, auto v) { return (acc << 1) | (v ^ 1); });
     fmt::print("The answer is: {}\n", gamma_rate * epsilon_rate);
 }
