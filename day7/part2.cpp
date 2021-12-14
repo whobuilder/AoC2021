@@ -3,6 +3,7 @@
 #include <fmt/format.h>
 #include <fmt/ranges.h>
 #include <fstream>
+#include <range/v3/algorithm/min_element.hpp>
 #include <range/v3/algorithm/minmax.hpp>
 #include <range/v3/istream_range.hpp>
 #include <range/v3/numeric/accumulate.hpp>
@@ -43,16 +44,6 @@ int main()
                   | ranges::to<std::vector>;
     auto minmax = ranges::minmax(values);
     auto destinations = ranges::views::iota(minmax.min, minmax.max + 1);
-    auto min_cost_dest = *ranges::begin(destinations);
-    auto min_cost = total_cost(values, min_cost_dest);
-    for (auto dest : destinations) {
-
-        auto cost = total_cost(values, dest);
-        if (cost < min_cost) {
-            min_cost_dest = dest;
-            min_cost = cost;
-        }
-    }
-    fmt::print("Ideal position: {}\n", min_cost_dest);
-    fmt::print("The answer is {}\n", min_cost);
+    auto all_costs = destinations | ranges::views::transform([&](auto dest) { return total_cost(values, dest); });
+    fmt::print("The answer is {}\n", *ranges::min_element(all_costs));
 }
