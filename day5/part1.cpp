@@ -25,7 +25,7 @@ int main()
     auto lines = is_view
                  | ranges::views::filter([](const auto &s) { return s != "->"; })// get rid of "->"
                  | ranges::views::transform([](auto &&c) {// create x,y pairs
-                       int x, y;
+                       int x{}, y{};
                        auto comma = ranges::find(c, ',');
                        std::from_chars(&*std::begin(c), &*comma, x);
                        std::from_chars(&*ranges::next(comma), &*std::end(c), y);
