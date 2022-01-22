@@ -5,10 +5,10 @@
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/find.hpp>
 #include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/istream_range.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/drop.hpp>
 #include <range/v3/view/filter.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/reverse.hpp>
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/transform.hpp>
@@ -29,10 +29,10 @@ int main()
             break;
         }
         auto values = ranges::split_view(line, ',')
-                      | ranges::view::transform([](auto &&rng) {
+                      | ranges::views::transform([](auto &&rng) {
                             return std::string_view(&*rng.begin(), static_cast<long unsigned>(ranges::distance(rng)));
                         })
-                      | ranges::view::transform([](auto &&sv) {
+                      | ranges::views::transform([](auto &&sv) {
                                 int value=0;
                                 std::from_chars(sv.data(),sv.data()+sv.size(),value);
                                 return value; });
@@ -45,10 +45,10 @@ int main()
 
     // fold information
     std::getline(input, line);
-    auto fold_info = ranges::view::split(line, '=');
-    auto fold_no_range = fold_info | ranges::view::drop(1) | ranges::view::transform([](auto &&rng) {
+    auto fold_info = ranges::views::split(line, '=');
+    auto fold_no_range = fold_info | ranges::views::drop(1) | ranges::views::transform([](auto &&rng) {
         return std::string_view(&*rng.begin(), static_cast<long unsigned>(ranges::distance(rng)));
-    }) | ranges::view::transform([](auto &&sv) {
+    }) | ranges::views::transform([](auto &&sv) {
                                 int value=0;
                                 std::from_chars(sv.data(),sv.data()+sv.size(),value);
                                 return value; });

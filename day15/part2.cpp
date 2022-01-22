@@ -1,4 +1,3 @@
-#include "timer.hpp"
 #include <array>
 #include <cstdlib>
 #include <fmt/format.h>
@@ -48,16 +47,16 @@ int main()
     while (std::getline(input, line)) {
         if (line == "") continue;
         for (col = 0; col < line.size(); ++col) {
-            weight_table[{ row, col }] = static_cast<std::size_t>(line[col] - '0');
-            distances[{ row, col }] = std::numeric_limits<std::size_t>::max();
+            weight_table[{ row, static_cast<int>(col) }] = static_cast<std::size_t>(line[col] - '0');
+            distances[{ row, static_cast<int>(col) }] = std::numeric_limits<std::size_t>::max();
         }
         ++row;
     }
 
 
-    auto rows = ranges::view::iota(0, row * map_scale_factor);
-    auto cols = ranges::view::iota(0, static_cast<int>(col * map_scale_factor));
-    auto indices = ranges::view::cartesian_product(rows, cols);
+    auto rows = ranges::views::iota(0, row * map_scale_factor);
+    auto cols = ranges::views::iota(0, static_cast<int>(col * map_scale_factor));
+    auto indices = ranges::views::cartesian_product(rows, cols);
     for (const auto &ind : indices) {
         auto [row_quot, row_rem] = std::div(std::get<0>(ind), row);
         auto [col_quot, col_rem] = std::div(std::get<1>(ind), static_cast<int>(col));
@@ -95,5 +94,5 @@ int main()
         // }
         visited.insert(min_unvisited);
     }
-    fmt::print("The answer is {}\n", distances[{ map_scale_factor * row - 1, map_scale_factor * col - 1 }]);
+    fmt::print("The answer is {}\n", distances[{ map_scale_factor * row - 1, static_cast<int>(map_scale_factor * col - 1) }]);
 }

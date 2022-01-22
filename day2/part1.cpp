@@ -3,9 +3,9 @@
 #include <fmt/ranges.h>
 #include <fstream>
 #include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/istream_range.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/chunk.hpp>
+#include <range/v3/view/istream.hpp>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -21,7 +21,7 @@ int main()
     };
     auto values =
       ranges::istream_view<std::string>(input) | ranges::to<std::vector>;
-    auto pairs = values | ranges::view::chunk(2);
+    auto pairs = values | ranges::views::chunk(2);
 
     auto position = Position{};
     ranges::for_each(pairs, [&position](auto p) {

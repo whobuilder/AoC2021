@@ -7,11 +7,11 @@
 #include <range/v3/algorithm/copy.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/rotate.hpp>
-#include <range/v3/istream_range.hpp>
 #include <range/v3/iterator/insert_iterators.hpp>
 #include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/group_by.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/transform.hpp>
 #include <string_view>
@@ -25,10 +25,10 @@ int main()
     std::getline(input, line);
     // https://stackoverflow.com/a/48403210/15697391
     auto remaining_days = ranges::split_view(line, ',')
-                          | ranges::view::transform([](auto &&rng) {
+                          | ranges::views::transform([](auto &&rng) {
                                 return std::string_view(&*rng.begin(), static_cast<long unsigned>(ranges::distance(rng)));
                             })
-                          | ranges::view::transform([](auto &&sv) {
+                          | ranges::views::transform([](auto &&sv) {
                                 unsigned value=0;
                                 std::from_chars(sv.data(),sv.data()+sv.size(),value);
                                 return value; })

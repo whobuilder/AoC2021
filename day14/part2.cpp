@@ -18,7 +18,7 @@ int main()
         insertion_rules[{ line[0], line[1] }] = line[6];
     }
     std::map<std::pair<char, char>, std::size_t> polymer;
-    for (const auto &p : ranges::view::sliding(polymer_template, 2)) {
+    for (const auto &p : ranges::views::sliding(polymer_template, 2)) {
         auto couple = std::pair<char, char>{ *ranges::begin(p), *ranges::next(ranges::begin(p)) };
         if (!polymer.count(couple)) polymer[couple] = 0;
         ++polymer[couple];

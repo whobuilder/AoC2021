@@ -8,14 +8,15 @@
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/find_if.hpp>
 #include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/istream_range.hpp>
 #include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/drop.hpp>
 #include <range/v3/view/enumerate.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/take.hpp>
 #include <range/v3/view/transform.hpp>
+#include <stdexcept>
 #include <string_view>
 #include <unordered_map>
 #include <vector>
@@ -64,7 +65,7 @@ std::vector<Display> parse_input(std::ifstream &input)
     std::vector<Display> displays;
     while (std::getline(input, line)) {
 
-        auto splitted = line | ranges::views::split(' ') | ranges::view::transform([](auto &&rng) {
+        auto splitted = line | ranges::views::split(' ') | ranges::views::transform([](auto &&rng) {
             return std::string_view(&*rng.begin(), static_cast<long unsigned>(ranges::distance(rng)));
         });
         auto hints = splitted | ranges::views::take(10) | ranges::views::transform([](auto &&d) { return to_bitset(d); }) | ranges::to<std::vector>;
@@ -76,11 +77,15 @@ std::vector<Display> parse_input(std::ifstream &input)
 }
 int to_digit(const std::unordered_map<int, std::bitset<7>> &mapping, const std::bitset<7> &bits)
 {
-    return (*ranges::find_if(mapping, [&bits](const auto &m) { return m.second == bits; })).first;
+    auto p = ranges::find_if(mapping, [&bits](const auto &m) { return m.second == bits; });
+    if (p == ranges::end(mapping)) {
+        throw std::invalid_argument("invalid mapping");
+    }
+    return (*p).first;
 }
 int to_number(const Display &d)
 {
-    return ranges::accumulate(ranges::view::enumerate(d.outputs), 0, std::plus{}, [&d](const auto output) { return std::pow(10, (3 - std::get<0>(output))) * to_digit(d.mapping, std::get<1>(output)); });
+    return ranges::accumulate(ranges::views::enumerate(d.outputs), 0, std::plus{}, [&d](const auto output) { return static_cast<int>(std::pow(10, (3 - std::get<0>(output))) * to_digit(d.mapping, std::get<1>(output))); });
 }
 int main()
 {
