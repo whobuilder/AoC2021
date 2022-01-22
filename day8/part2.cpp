@@ -16,6 +16,7 @@
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/take.hpp>
 #include <range/v3/view/transform.hpp>
+#include <stdexcept>
 #include <string_view>
 #include <unordered_map>
 #include <vector>
@@ -76,7 +77,11 @@ std::vector<Display> parse_input(std::ifstream &input)
 }
 int to_digit(const std::unordered_map<int, std::bitset<7>> &mapping, const std::bitset<7> &bits)
 {
-    return (*ranges::find_if(mapping, [&bits](const auto &m) { return m.second == bits; })).first;
+    auto p = ranges::find_if(mapping, [&bits](const auto &m) { return m.second == bits; });
+    if (p == ranges::end(mapping)) {
+        throw std::invalid_argument("invalid mapping");
+    }
+    return (*p).first;
 }
 int to_number(const Display &d)
 {
