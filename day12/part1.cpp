@@ -3,7 +3,7 @@
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/find.hpp>
 #include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/istream_range.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/transform.hpp>
 #include <unordered_map>
@@ -58,7 +58,7 @@ int main()
     std::ifstream input{ "/home/onur/cpp_projects/cpp_experiments/adventofcode/2021/day12/day12.txt" };
     cave_connections_t cave_connections;
     for (const auto &cave : ranges::istream_view<std::string>(input)) {
-        auto f = ranges::views::split(cave, '-') | ranges::view::transform([](auto &&rng) {
+        auto f = ranges::views::split(cave, '-') | ranges::views::transform([](auto &&rng) {
             return std::string(&*rng.begin(), static_cast<long unsigned>(ranges::distance(rng)));
         });
         if (*ranges::begin(f) != "end" && *ranges::next(ranges::begin(f)) != "start")

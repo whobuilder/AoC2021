@@ -37,9 +37,9 @@ int main()
     while (std::getline(input, line)) {
         if (line == "") continue;
         for (col = 0; col < line.size(); ++col) {
-            weight_table[{ row, col }] = static_cast<std::size_t>(line[col] - '0');
-            distances[{ row, col }] = std::numeric_limits<std::size_t>::max();
-            unvisited.insert({ row, col });
+            weight_table[{ row, static_cast<int>(col) }] = static_cast<std::size_t>(line[col] - '0');
+            distances[{ row, static_cast<int>(col) }] = std::numeric_limits<std::size_t>::max();
+            unvisited.insert({ row, static_cast<int>(col) });
         }
         ++row;
     }
@@ -57,5 +57,5 @@ int main()
             if (distance < distances[n]) distances[n] = distance;
         }
     }
-    fmt::print("The answer is {}\n", distances[{ row - 1, col - 1 }]);
+    fmt::print("The answer is {}\n", distances[{ row - 1, static_cast<int>(col - 1) }]);
 }

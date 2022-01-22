@@ -6,12 +6,12 @@
 #include <range/v3/algorithm/find.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/minmax.hpp>
-#include <range/v3/istream_range.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/generate_n.hpp>
 #include <range/v3/view/iota.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/map.hpp>
 #include <range/v3/view/transform.hpp>
 #include <string_view>

@@ -5,9 +5,9 @@
 #include <numeric>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/nth_element.hpp>
-#include <range/v3/istream_range.hpp>
 #include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/reverse.hpp>
 #include <range/v3/view/transform.hpp>
 #include <unordered_map>

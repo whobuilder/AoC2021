@@ -20,9 +20,9 @@ int main()
         insertion_rules[{ line[0], line[1] }] = line[6];
     }
     for (int i = 0; i < 10; ++i) {
-        auto template_pair = ranges::view::sliding(polymer_template, 2) | ranges::view::transform([](const auto &p) { return std::pair<char, char>{ *ranges::begin(p), *ranges::next(ranges::begin(p)) }; });
+        auto template_pair = ranges::views::sliding(polymer_template, 2) | ranges::views::transform([](const auto &p) { return std::pair<char, char>{ *ranges::begin(p), *ranges::next(ranges::begin(p)) }; });
         std::string template_copy = polymer_template;
-        for (const auto &p : ranges::view::enumerate(template_pair)) {
+        for (const auto &p : ranges::views::enumerate(template_pair)) {
             auto ind = 2 * p.first + 1;
             template_copy.insert(ind, 1, insertion_rules[p.second]);
         }

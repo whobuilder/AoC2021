@@ -2,8 +2,8 @@
 #include <fmt/format.h>
 #include <fstream>
 #include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/istream_range.hpp>
 #include <range/v3/numeric/accumulate.hpp>
+#include <range/v3/view/istream.hpp>
 #include <unordered_map>
 #include <vector>
 int main()

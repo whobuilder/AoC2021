@@ -9,9 +9,9 @@
 #include <range/v3/algorithm/all_of.hpp>
 #include <range/v3/algorithm/for_each.hpp>
 #include <range/v3/algorithm/nth_element.hpp>
-#include <range/v3/istream_range.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/common.hpp>
 #include <range/v3/view/enumerate.hpp>
 #include <range/v3/view/filter.hpp>

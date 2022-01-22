@@ -5,12 +5,12 @@
 #include <fstream>
 #include <range/v3/algorithm/copy.hpp>
 #include <range/v3/algorithm/for_each.hpp>
-#include <range/v3/istream_range.hpp>
 #include <range/v3/iterator/insert_iterators.hpp>
 #include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/conversion.hpp>
 #include <range/v3/view/enumerate.hpp>
 #include <range/v3/view/filter.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/map.hpp>
 #include <range/v3/view/transform.hpp>
 #include <unordered_map>
@@ -22,14 +22,14 @@ auto is_neighbour_of(std::size_t origin_ind, std::size_t current_ind)
 
     auto bottom_index = origin_ind + RowSize;
     auto top_index = origin_ind - RowSize;
-    if (current_ind == bottom_index) return true;//bottom neighbour
+    if (current_ind == bottom_index) return true;// bottom neighbour
     if ((origin_ind % RowSize) != 0 && bottom_index - 1 == current_ind) return true;// bottom left neighbour
     if ((origin_ind % RowSize) != (RowSize - 1) && bottom_index + 1 == current_ind) return true;// bottom right neighbour
     if (top_index == current_ind) return true;// top neighbour
     if ((origin_ind % RowSize) != 0 && top_index - 1 == current_ind) return true;// top left neighbour
     if ((origin_ind % RowSize) != (RowSize - 1) && top_index + 1 == current_ind) return true;// top right neighbour
-    if ((origin_ind % RowSize) != 0 && origin_ind - 1 == current_ind) return true;//left neighbour
-    if ((origin_ind % RowSize) != (RowSize - 1) && origin_ind + 1 == current_ind) return true;//right neighbour
+    if ((origin_ind % RowSize) != 0 && origin_ind - 1 == current_ind) return true;// left neighbour
+    if ((origin_ind % RowSize) != (RowSize - 1) && origin_ind + 1 == current_ind) return true;// right neighbour
 
     return false;
 }
@@ -46,13 +46,13 @@ int main()
     std::size_t step = 0;
     while (!all_flashed) {
         ++step;
-        //First, the energy level of each octopus increases by 1.
+        // First, the energy level of each octopus increases by 1.
         ranges::for_each(energy_levels, [](auto &v) { ++v.second; });
         // fmt::print("{}\n", energy_levels);
         std::unordered_map<std::size_t, int> flashed_octopuses;
         ranges::for_each(energy_levels | ranges::views::filter([](auto v) { return v.second == 10; }), [&flashed_octopuses](auto octopus) { flashed_octopuses[octopus.first] = octopus.second; });
         auto flashed_indices = ranges::views::keys(flashed_octopuses) | ranges::to<std::deque>;
-        //Second, do the flashing an increase neighbouring energy levels
+        // Second, do the flashing an increase neighbouring energy levels
         while (std::size(flashed_indices)) {
             auto flashed_index = flashed_indices.front();
             auto neighbours = energy_levels | ranges::views::filter([flashed_index](auto octopus) { return is_neighbour_of<10>(flashed_index, octopus.first); });

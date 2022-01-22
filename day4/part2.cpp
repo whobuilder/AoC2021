@@ -8,15 +8,17 @@
 #include <range/v3/algorithm/any_of.hpp>
 #include <range/v3/algorithm/count_if.hpp>
 #include <range/v3/algorithm/find.hpp>
-#include <range/v3/istream_range.hpp>
 #include <range/v3/numeric/accumulate.hpp>
-#include <range/v3/to_container.hpp>
+#include <range/v3/range/access.hpp>
+#include <range/v3/range/conversion.hpp>
+#include <range/v3/range/primitives.hpp>
 #include <range/v3/view/chunk.hpp>
 #include <range/v3/view/common.hpp>
 #include <range/v3/view/drop.hpp>
 #include <range/v3/view/enumerate.hpp>
 #include <range/v3/view/filter.hpp>
 #include <range/v3/view/for_each.hpp>
+#include <range/v3/view/istream.hpp>
 #include <range/v3/view/sliding.hpp>
 #include <range/v3/view/split.hpp>
 #include <range/v3/view/transform.hpp>
@@ -29,23 +31,23 @@ int main()
     auto is_view = ranges::istream_view<std::string>(input);
 
     auto picked_numbers = ranges::split_view(*(ranges::begin(is_view)), ',')
-                          | ranges::view::transform([](auto &&rng) {
+                          | ranges::views::transform([](auto &&rng) {
                                 // https://stackoverflow.com/a/48403210/15697391
                                 return std::string_view(&*rng.begin(), static_cast<long unsigned>(ranges::distance(rng)));
                             })
-                          | ranges::view::transform([](auto &&sv) {
+                          | ranges::views::transform([](auto &&sv) {
                                 int value=0;
                                 std::from_chars(sv.data(),sv.data()+sv.size(),value);
                                 return value; });
     fmt::print("Numbers: {}\n", picked_numbers);
 
-    auto board_numbers = is_view | ranges::view::drop(1) | ranges::view::transform([](auto &&v) { return std::stoi(v); }) | ranges::to<std::vector<std::optional<int>>>;
-    auto boards = board_numbers | ranges::view::chunk(25);
+    auto board_numbers = is_view | ranges::views::drop(1) | ranges::views::transform([](auto &&v) { return std::stoi(v); }) | ranges::to<std::vector<std::optional<int>>>;
+    auto boards = board_numbers | ranges::views::chunk(25);
     auto number_of_boards = ranges::size(boards);
-    //TODO: get rid of this vector and use the board directly to check the winning condition
+    // TODO: get rid of this vector and use the board directly to check the winning condition
     std::vector<std::array<std::array<std::optional<int>, 5>, 10>> found_rows_and_columns(number_of_boards);
 
-    std::vector<unsigned long> finished_boards;
+    std::vector<std::size_t> finished_boards;
     bool stop = false;
     for (auto number : picked_numbers) {
         if (stop) break;
