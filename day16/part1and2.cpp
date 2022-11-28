@@ -47,7 +47,7 @@ private:
     {
         total_version_ = static_cast<std::size_t>(version_);
         for (const auto &p : subpackets_) {
-            total_version_ += static_cast<std::size_t>(p.total_version());
+            total_version_ += p.total_version();
         }
     }
 
@@ -144,7 +144,7 @@ private:
     {
         char hexadigit;
         inbuf.get(hexadigit);
-        std::size_t hexadigit_value;
+        std::size_t hexadigit_value{};
         std::from_chars(&hexadigit, std::next(&hexadigit), hexadigit_value, 16);
         bits_in_memory =
           (bits_in_memory << 4) | (hexadigit_value & 0xFF);

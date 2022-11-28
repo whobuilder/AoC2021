@@ -62,7 +62,9 @@ int main()
         auto [col_quot, col_rem] = std::div(std::get<1>(ind), static_cast<int>(col));
         if (row_quot == 0 && col_quot == 0) continue;
         auto original_weight = weight_table[{ row_rem, col_rem }];
-        auto weight = original_weight + static_cast<std::size_t>(row_quot + col_quot);
+        auto row_quot_unsigned = static_cast<std::size_t>(row_quot);
+        auto col_quot_unsigned = static_cast<std::size_t>(col_quot);
+        auto weight = original_weight + row_quot_unsigned + col_quot_unsigned;
         if (weight > 9) weight = weight % 10 + 1;
         weight_table[{ std::get<0>(ind), std::get<1>(ind) }] = weight;
         distances[{ std::get<0>(ind), std::get<1>(ind) }] = std::numeric_limits<std::size_t>::max();

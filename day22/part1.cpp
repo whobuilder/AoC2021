@@ -46,8 +46,8 @@ bool operator<(const coordinates &c1, const coordinates &c2)
 
 std::pair<int, int> get_borders(std::string_view border_v)
 {
-    int value1;
-    int value2;
+    int value1{};
+    int value2{};
     using namespace std::literals;
     auto border = std::string(border_v);
     auto value1_end = border.find(".."sv);

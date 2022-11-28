@@ -277,7 +277,7 @@ private:
         if (target_room.has_value() && !is_hall_blocked(amphipod.location, target_room.value(), all_amphipods)) {
             return std::pair{ Amphipod{ target_room.value(), amphipod.type }, get_cost(amphipod, target_room.value()) };
         }
-        return {};
+        return std::nullopt;
     }
 
     bool should_move(const Amphipod &amphipod, const Amphipods &all_amphipods)

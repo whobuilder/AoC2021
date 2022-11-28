@@ -66,7 +66,7 @@ auto parse(const std::string &input_path) -> ocean_map
         ++row_no;
     }
     map.max_row_index = row_no - 1;
-    map.max_column_index = std::size(line) - 1;
+    map.max_column_index = static_cast<long long>(std::size(line)) - 1;
     return map;
 }
 

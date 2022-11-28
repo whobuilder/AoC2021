@@ -20,13 +20,13 @@ long long get_z(long long previous_z, int digit, int line5, int line6, int line1
 using ParamType = std::array<int, 14>;
 
 
-int64_t search(const ParamType &line5, const ParamType &line6, const ParamType &line16, std::function<long long(long long, long long)> func)
+long long search(const ParamType &line5, const ParamType &line6, const ParamType &line16, std::function<long long(long long, long long)> func)
 {
     std::unordered_map<long long, long long> previous_zs;
     std::unordered_map<long long, long long> zs;
     previous_zs.insert(std::make_pair(0, 0));
 
-    for (int64_t index = 0; index < 14; index++) {
+    for (std::size_t index = 0; index < 14; index++) {
         for (auto [previous_z, previous_value] : previous_zs) {
             for (int digit = 1; digit < 10; digit++) {
                 long long value = previous_value * 10 + digit;
@@ -48,7 +48,7 @@ int main()
     std::ifstream input_stream{ R"(D:\cpp_projects\cpp_experiments\AoC2021\day24\day24.txt)" };
     std::string line;
     int ind = 1;
-    int input_no = -1;
+    std::size_t input_no = 0;
     ParamType line5{};
     ParamType line6{};
     ParamType line16{};
@@ -65,7 +65,7 @@ int main()
             line16[input_no] = std::stoi(v[2]);
         } else if (line[0] == 'i') {
             ind = 1;
-            ++input_no;
+            if (input_no != 0) ++input_no;
         }
         ++ind;
     }
