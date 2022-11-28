@@ -1,0 +1,16 @@
+{
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"extensions": [
+		"ms-vscode.cpptools",
+		"ms-vscode.cmake-tools"
+	],
+	"settings": {
+		"cmake.configureArgs": [
+			"-DONKI_CMAKE_FILES_PATH=/OnKiCMakeFiles"
+		],
+		"cmake.generator": "Unix Makefiles",
+		"cmake.buildDirectory": "${workspaceFolder}/build/${buildKit}/${buildType}"
+	}
+}
